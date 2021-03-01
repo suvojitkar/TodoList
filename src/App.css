@@ -9,6 +9,10 @@ body {
   margin: 40px auto;
 }
 
+.projectHeader {
+  color: white;
+}
+
 #add-task-bar input {
   background-color: rgb(27, 112, 137);
   border: 0;
@@ -34,4 +38,14 @@ body {
   cursor: pointer;
   font-weight: bolder;
   color:#fff;
+}
+
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color:#7f00ff;
+   color: white;
+   text-align: center;
 }

@@ -67,6 +67,8 @@ class App extends React.Component {
 
   render() {
     return (
+      <div>
+        <center><h1 className="projectHeader"> Work Tracker React App </h1></center>
       <div className="App">
        <header>
           <form id="add-task-bar" onSubmit={this.addItem}>
@@ -75,6 +77,10 @@ class App extends React.Component {
           </form>
         </header>
         <ListItems items={this.state.todoItems} deleteItem={this.deleteItem} editItem={this.editItem}></ListItems>
+        <div class="footer">
+          <p>Developed by: @suvojitKar</p>
+        </div>
+        </div>
       </div>
     );
   }

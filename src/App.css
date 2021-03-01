@@ -49,3 +49,14 @@ body {
    color: white;
    text-align: center;
 }
+
+#teamheader {
+  color: #fff;
+  padding: 0px 20px;
+  margin-top: 10px;
+}
+
+
+#membersDiv {
+  margin-left: 83px;
+}

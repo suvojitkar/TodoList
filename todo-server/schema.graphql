@@ -1,0 +1,11 @@
+type Query  {
+   test: String,
+   copmon_members: [members],
+   im_member: [members]
+}
+
+type members {
+    id: ID!,
+    name: String,
+    location: String
+}

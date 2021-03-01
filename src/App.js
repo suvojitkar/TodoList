@@ -16,6 +16,7 @@ class App extends React.Component {
     this.handleInput = this.handleInput.bind(this);
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.editItem = this.editItem.bind(this);
   }
 
   handleInput($event) {
@@ -50,6 +51,20 @@ class App extends React.Component {
     });
   }
 
+  editItem($event, key) {
+    const items = this.state.todoItems;
+    items.map(item => {
+      if (item.key === key) {
+        item.text = $event.target.value;
+      }
+    });
+
+    this.setState({
+      todoItems: items
+    });
+
+  }
+
   render() {
     return (
       <div className="App">
@@ -59,7 +74,7 @@ class App extends React.Component {
             <button type="submit">Add</button>
           </form>
         </header>
-        <ListItems items={this.state.todoItems} deleteItem={this.deleteItem}></ListItems>
+        <ListItems items={this.state.todoItems} deleteItem={this.deleteItem} editItem={this.editItem}></ListItems>
       </div>
     );
   }

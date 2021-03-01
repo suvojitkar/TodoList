@@ -14,3 +14,14 @@
 p .del{
     float: right;
 }
+
+.list p input {
+    background-color: transparent;
+    border: 0;
+    color: #fff;
+    width: 240px;
+}
+
+.list p input:focus {
+    outline: none;
+}

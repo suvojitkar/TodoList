@@ -1,22 +1,37 @@
 import React from 'react';
 import './App.css';
 import ListItems from './components/ListItem/ListItem';
+import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
+import gql from 'graphql-tag'
 
+const endPointUrl = 'http://localhost:9000/graphql';
+
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}
+
+const client = new ApolloClient({
+  link: new HttpLink({ uri: endPointUrl }),
+  cache: new InMemoryCache(),
+  defaultOptions: defaultOptions
+});
 
 async function loadTeams(currentTeam) {
-  const query = `{
+  const query = gql `{
     ${currentTeam} {
       id,
       name
     }
   }`
-  const response = await fetch('http://localhost:9000/graphql', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ query: query })
-  })
-  const rsponseBody = await response.json();
-  return rsponseBody.data;
+  const { data } = await client.query({ query });
+  return data;
 }
 
 class App extends React.Component {
@@ -34,6 +49,7 @@ class App extends React.Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.editItem = this.editItem.bind(this);
     this.change = this.change.bind(this);
+    this.changeMember = this.changeMember.bind(this);
   }
 
   componentDidMount() {
@@ -41,10 +57,14 @@ class App extends React.Component {
     this.loadTeamDetails();
   }
 
+  changeMember() {
+    console.log("member:",document.getElementById("teammember").value);
+  }
+
   loadTeamDetails(currentTeam ='copmon_members') {
     loadTeams(currentTeam).then(resp => {
       console.log('resp', resp);
-      let selectStart = `<select name="teammember" id="teammember">`;
+      let selectStart = `<select name="teammember" id="teammember" onChange=${this.changeMember}>`;
       let selectEnd = `</select>`;
       let options = '';
       for (let memberDesc = 0; memberDesc < resp[currentTeam].length; memberDesc++) {
@@ -123,13 +143,6 @@ class App extends React.Component {
               </select>
 
               <div id="membersDiv"></div>
-              {/* <select name="teammember" id="teammember">
-                <option value="sk">Suvojit</option>
-                <option value="shreya"> shreya </option>
-                <option value="noorul"> Noorul</option>
-                <option value="srivignesh"> srivignesh </option>
-                <option value="mike"> michael </option>
-              </select> */}
 
              <input type="text" placeholder="Enter your task" value={this.state.currentTodoItem.text} onChange={this.handleInput}></input>
              <button type="submit">Add</button>

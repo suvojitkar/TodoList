@@ -11,3 +11,7 @@
 .userIcon {
     cursor: pointer;
 }
+
+.listItems {
+    overflow-y: scroll;
+}

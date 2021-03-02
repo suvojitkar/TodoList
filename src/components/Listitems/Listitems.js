@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { Trash } from 'react-bootstrap-icons';
 
 function Listitems(props) {
-    const listItems = props.items.todoItems.map(items => {
+    const listItems = props.items.todoItems.slice(0).reverse().map(items => {
         return <Card className="listTask" key={ items.key }>
             <Card.Body className="taskText">
                 <Row>

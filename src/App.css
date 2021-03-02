@@ -39,3 +39,8 @@ body {
   font-weight: bolder;
   color:#fff;
 }
+
+.listComponent {
+  max-height: 386px;
+  overflow-y: scroll;
+}

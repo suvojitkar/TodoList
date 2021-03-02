@@ -12,9 +12,6 @@ import './components/Footer/Footer.css';
 
 import logo from './assets/logo.gif';
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 export class App extends Component {
 
   constructor(props) {
@@ -42,8 +39,11 @@ export class App extends Component {
 
         <div id="add-task-bar" className="App">
           <input type="text" id="currentTask" placeholder="Enter a task" value={ this.state.currentTask} onChange={ this.taskInputHandler} autoComplete="off"></input>
-          <button onClick={() => { this.props.AddTask(this.state.currentTask) }}> Add</button>
-          <Listitems items={this.props}></Listitems>
+          <button onClick={() => { this.props.AddTask(this, this.state.currentTask) }}> Add</button>
+          
+          <div className="listComponent">
+            <Listitems items={this.props}></Listitems>
+          </div>
         </div>
         <Footer></Footer>
       </div>
@@ -65,9 +65,16 @@ const mapDispatchToProps = (dispatch) => {
     changeDeveloper: (name) => {
       dispatch(changeDevName(name));
     },
-    AddTask: (task) => {
-      console.log('User action indicates to dispatch an action to add items:', task);
-      dispatch(addtask(task));
+    AddTask: (stateRef, task) => {
+      stateRef.setState({
+        currentTask: ''
+      });
+      if (task !== "") {
+        console.log('User action indicates to dispatch an action to add items:', task);
+        dispatch(addtask(task));
+      } else {
+        alert('Task cannot be empty');
+      }
     },
     DeleteTask: (taskId) => {
       console.log('User action indicates to dispatch an action to delete items:', taskId);

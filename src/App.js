@@ -1,59 +1,72 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addtask, deletetask, changeDevName } from './redux-mgmt/actions';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { connect } from 'react-redux';
-import { addtask } from './redux-mgmt/actions';
-import { changeDevName } from './redux-mgmt/actions';
 
-function App(props) {
+import Listitems from './components/Listitems/Listitems';
+import './components/Listitems/Listitems.css';
+import Footer from './components/Footer/Footer';
+import './components/Footer/Footer.css';
 
+export class App extends Component {
 
-  return (
-    <div>
-      {/* <div className="projectHeader"> {props.developer} </div>
-      <button onClick={() => { props.changeDeveloper("raj") }}> change Dev</button> */}
-      
-      {/* Todo  */}
-      <br></br>
-        <input type="text" id="currentTask" placeholder="Enter a task"></input>
-      <button onClick={() => { props.AddTask(document.getElementById('currentTask').value) }}> Add</button>
-      <div className="projectHeader">
-        {
-          props.todoItems.map((item, key) => {
-            return <span style={{ whiteSpace: 'pre' }} key={key}>{item + '\n'}</span>
-            // return item;
-          })
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTask: ''
+    }
+    this.taskInputHandler = this.taskInputHandler.bind(this);
+  } 
+
+  taskInputHandler($event) {
+    this.setState({
+      currentTask: $event.target.value
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <center>
+          <h1 className="projectHeader"> Dev Analyser </h1>
+        </center>
+
+        <div id="add-task-bar" className="App">
+          <input type="text" id="currentTask" placeholder="Enter a task" value={ this.state.currentTask} onChange={ this.taskInputHandler} autoComplete="off"></input>
+          <button onClick={() => { this.props.AddTask(this.state.currentTask) }}> Add</button>
+          <Listitems items={this.props}></Listitems>
+        </div>
+        <Footer></Footer>
       </div>
-
-      {/* Todo ends */}
-    </div>
-  );
+    )
+  }
 }
 
-// Get state Data as props
+// create props from global state variable
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return {
-    // prop variable
     todoItems: state.todoItems,
     developer: state.Developer
   }
 }
 
-// dispatchable function for a functional component
-// call dispatch to update datastore
+// create props for actions
 const mapDispatchToProps = (dispatch) => {
   return {
-    // prop function
     changeDeveloper: (name) => {
       dispatch(changeDevName(name));
     },
     AddTask: (task) => {
+      console.log('User action indicates to dispatch an action to add items:', task);
       dispatch(addtask(task));
+    },
+    DeleteTask: (taskId) => {
+      console.log('User action indicates to dispatch an action to delete items:', taskId);
+      dispatch(deletetask(taskId));
     }
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App)

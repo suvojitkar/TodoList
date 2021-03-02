@@ -10,7 +10,7 @@ body {
 }
 
 .projectHeader {
-  color: white;
+  color: #fff;
 }
 
 #add-task-bar input {
@@ -38,25 +38,4 @@ body {
   cursor: pointer;
   font-weight: bolder;
   color:#fff;
-}
-
-.footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   background-color:#7f00ff;
-   color: white;
-   text-align: center;
-}
-
-#teamheader {
-  color: #fff;
-  padding: 0px 20px;
-  margin-top: 10px;
-}
-
-
-#membersDiv {
-  margin-left: 83px;
 }

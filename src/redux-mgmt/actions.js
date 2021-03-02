@@ -5,6 +5,7 @@ Action defines which reducer is to be used
 // Action Types
 const CHANGE_DEV = 'CHANGE_DEV';
 const ADD_TASK = 'ADD_TASK';
+const DELETE_TASK = 'DELETE_TASK';
 
 // Action Creater
 const testDevName = (name) => {
@@ -16,11 +17,21 @@ const testDevName = (name) => {
 }
 
 export const addtask = (task) => {
-    console.log('add task', task);
+    console.log('Lets make a action object for adding the task:', task);
     return {
         type: ADD_TASK,
         info: 'This action is used to add new task',
-        payload: task
+        payload: task,
+        createdAt: new Date().getTime()
+    }
+}
+
+export const deletetask = (taskId) => {
+    console.log('Lets make a action object for deleting the task:', taskId);
+    return {
+        type: DELETE_TASK,
+        info: 'This action is used to Delete task',
+        payload: taskId
     }
 }
 

@@ -1,0 +1,13 @@
+.listTask {
+    color: white;
+    background-color: #bf07ac;
+    margin: 20px;
+}
+
+.taskText {
+    padding: 10px;
+}
+
+.userIcon {
+    cursor: pointer;
+}

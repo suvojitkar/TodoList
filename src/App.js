@@ -10,6 +10,11 @@ import './components/Listitems/Listitems.css';
 import Footer from './components/Footer/Footer';
 import './components/Footer/Footer.css';
 
+import logo from './assets/logo.gif';
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 export class App extends Component {
 
   constructor(props) {
@@ -29,8 +34,10 @@ export class App extends Component {
   render() {
     return (
       <div>
+        <br/>
         <center>
-          <h1 className="projectHeader"> Todo List </h1>
+          <h1 className="projectHeader"> TaskList </h1>
+          <img src={logo} alt="logo" width="100" height="100"></img>
         </center>
 
         <div id="add-task-bar" className="App">

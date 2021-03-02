@@ -30,7 +30,7 @@ export class App extends Component {
     return (
       <div>
         <center>
-          <h1 className="projectHeader"> Dev Analyser </h1>
+          <h1 className="projectHeader"> Todo List </h1>
         </center>
 
         <div id="add-task-bar" className="App">

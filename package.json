@@ -2,7 +2,6 @@
   "name": "todo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://suvojitkar.github.io/TodoList",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -16,6 +15,7 @@
     "apollo-link-http": "^1.5.17",
     "apollo-link-state": "^0.4.2",
     "bootstrap": "^4.6.0",
+    "firebase": "^8.2.9",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "react": "^17.0.1",

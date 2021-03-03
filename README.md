@@ -1,8 +1,8 @@
 # Demo
-- https://suvojitkar.github.io/TodoList
+- https://sk-redux-analyzer.web.app/
 
 # Docker Demo
-- image:
+- image: suvojitkar365/analyzer:1
 - url: `localhost`
 
 # Install dependency
@@ -31,7 +31,7 @@ https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfk
 https://github.com/zalmoxisus/redux-devtools-extension
 
 # Create docker image
-- docker build -t sk-react-analyzer .
+- docker build -t sk-react-analyzer .  
 Explanation:
 - `docker build` is used to build an image
 - `-t` flag tags the image with a name
@@ -42,7 +42,7 @@ Explanation:
 - docker images
 
 # Run image as container
-- docker run -it -d -p 3000:3000 -p 80:80 sk-react-analyzer-1
+- docker run -it -d -p 3000:3000 -p 80:80 sk-react-analyzer-1  
 Explanation:
 - `docker run` is used to run an image
 - `i` flag stands for interactive
@@ -57,12 +57,12 @@ Explanation:
 - docker ps
 
 # stop a container
-- docker stop a5f850583e17
+- docker stop a5f850583e17  
 Explanation:
 - a5f850583e17 is containerId
 
 # View docker content:
-- docker exec -it a5f850583e17 sh
+- docker exec -it a5f850583e17 sh  
 Explanation:
 - a5f850583e17 is container ID
 - `i` flag stands for interactive
@@ -76,3 +76,7 @@ Explanation:
 
 # Docker remove cheatsheet
 - https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/
+
+# Google login with firebase
+- https://github1s.com/okstaticzero/react-firebase-authentication/blob/master/src/Navbar.js
+

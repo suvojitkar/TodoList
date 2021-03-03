@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addtask, deletetask, changeDevName } from './redux-mgmt/actions';
+  
+import firebaseApp from './config/firebaseconfig';
+import firebase from 'firebase';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -26,19 +29,86 @@ export class App extends Component {
     super(props);
     this.state = {
       currentTask: '',
-      isVisible: false,
+      userInfo: ''
     }
     this.taskInputHandler = this.taskInputHandler.bind(this);
+    this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
+    this.handleGoogleLogout = this.handleGoogleLogout.bind(this);
   }
-
 
   taskInputHandler($event) {
     this.setState({
+      ...this.state,
       currentTask: $event.target.value
     });
   }
 
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (!this.state.userInfo) {
+          this.setState({
+            ...this.state,
+            userInfo: user.providerData[0]
+          });
+        }
+        console.log("User is logged in", this.state);
+      } else {
+        console.log("User is logged out", this.state);
+      }
+    });
+  }
+  
+  handleGoogleLogout() {
+    firebaseApp.auth().signOut().then(() => {
+         this.setState({
+          ...this.state,
+          userInfo: ''
+        });
+      console.log("Logout out succesful", this.state);
+    },(error) => {
+      console.log("An error happened during logouot", error);
+    });
+  }
+
+
+  handleGoogleLogin(e) {
+    e.preventDefault();
+    let provider = new firebase.auth.GoogleAuthProvider();
+    firebaseApp.auth().signInWithPopup(provider).then((result) => {
+      if (!this.state.userInfo) {
+        this.setState({
+          ...this.state,
+          userInfo: result.additionalUserInfo.profile
+        });
+      }
+      console.log('Google login success', this.state);
+    }).catch((error) => {
+      let errorMessage = error.message;
+      alert("Google sign in error: " + errorMessage);
+    });
+  }
+
+
   render() {
+    let navMenuopt;
+    if (!this.state.userInfo) {
+      console.log("show login");
+      navMenuopt = <Button variant="outline-success" onClick={this.handleGoogleLogin}> Login </Button>
+    } else {
+      console.log("show dropdown");
+      navMenuopt = <Dropdown>
+                    <Dropdown.Toggle variant="info" id="dropdown-basic">
+                      <Image className="profilepic" src={this.state.userInfo.hasOwnProperty('photoURL') ? this.state.userInfo.photoURL : this.state.userInfo.picture} roundedCircle />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
+                      <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
+                      <Dropdown.Item onClick={this.handleGoogleLogout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+    }
     return (
       <div>
         <Navbar bg="light" expand="lg">
@@ -47,24 +117,13 @@ export class App extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#link">Link</Nav.Link>
+              <Nav.Link href="#link">{ }</Nav.Link>
               <Form inline>
                 <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                 <Button variant="outline-success">Search</Button>
               </Form>
             </Nav>
-
-            <Dropdown>
-              <Dropdown.Toggle variant="info" id="dropdown-basic">
-                <Image className="profilepic" src="https://scontent.fccu11-1.fna.fbcdn.net/v/t1.0-9/29356752_1158364047638851_5632027070927208448_n.jpg?_nc_cat=101&ccb=3&_nc_sid=09cbfe&_nc_ohc=h6DFU6p6U8oAX8OqKR6&_nc_ht=scontent.fccu11-1.fna&oh=9c3a5ce4c481b2f85dccab1f307ae9d3&oe=6065781E" roundedCircle />
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-
+            { navMenuopt }
             <div className="offset">
               offset
             </div>

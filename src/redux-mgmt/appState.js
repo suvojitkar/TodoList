@@ -4,7 +4,8 @@ const appState = {
         text: '',
         key: ''
     },
-    Developer: 'suvojit'
+    Developer: 'suvojit',
+    Profile: ''
 }
 
 export default appState;

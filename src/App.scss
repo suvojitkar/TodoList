@@ -11,7 +11,7 @@ body {
 
 .title {
     position: relative;
-    top: 50%;  
+    top: 23px;  
     width: 24em;
     margin: 0 auto;
     border-right: 2px solid rgba(255,255,255,.75);
@@ -35,45 +35,4 @@ body {
 @keyframes blinkTextCursor{
   from{border-right-color: rgba(255,255,255,.75);}
   to{border-right-color: transparent;}
-}
-
-#add-task-bar input {
-  background-color: rgb(27, 112, 137);
-  border: 0;
-  width: 256px;
-  height: 50px;
-  padding: 0 20px;
-  margin: 20px;
-  font-size: 15px;
-  border-radius: 7px;
-  color: #fff;
-}
-
-::placeholder {
-  color: #fff;
-}
-
-#add-task-bar button {
-  height: 50px;
-  width: 80px;
-  border-radius: 5px;
-  border: 0;
-  background-color: rgb(202, 156, 24);
-  cursor: pointer;
-  font-weight: bolder;
-  color:#fff;
-}
-
-.listComponent {
-  max-height: 386px;
-  overflow-y: scroll;
-}
-
-.profilepic {
-  height: 30px;
-  width:30px;
-}
-
-.offset {
-  visibility: hidden;
 }

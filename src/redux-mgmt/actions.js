@@ -1,20 +1,16 @@
+import firebaseApp from '../config/firebaseconfig';
+import firebase from 'firebase';
+
 /*
 Action defines which reducer is to be used
 */
 
 // Action Types
-const CHANGE_DEV = 'CHANGE_DEV';
 const ADD_TASK = 'ADD_TASK';
 const DELETE_TASK = 'DELETE_TASK';
+const AUTH_USER = 'AUTH_USER';
+const USER_LOGOUT = 'USER_LOGOUT';
 
-// Action Creater
-const testDevName = (name) => {
-    return {
-        type: CHANGE_DEV,
-        info: 'This action is used to change developer name',
-        payload: name
-    }
-}
 
 export const addtask = (task) => {
     console.log('Lets make a action object for adding the task:', task);
@@ -35,18 +31,44 @@ export const deletetask = (taskId) => {
     }
 }
 
-export const changeDevName = (name) => {
+export const Authuser = () => {
     return (dispatch) => {
-        fetch('https://jsonplaceholder.typicode.com/users')
-        .then(res=>res.json())
-        .then(resp2 => {
+        let provider = new firebase.auth.GoogleAuthProvider();
+        firebaseApp.auth().signInWithPopup(provider).then((result) => {
+            let profileObj = {
+                'name': result.user.displayName,
+                'email': result.user.email,
+                'img': result.user.photoURL
+            }
             dispatch({
-                type: CHANGE_DEV,
-                info: 'This action is  used to change developer name',
-                payload: resp2[0].name
+                type: AUTH_USER,
+                info: 'This action is used to auth user',
+                Profile: profileObj
             });
-        })
+        }).catch((error) => {
+            alert(error.message);
+        });
     }
 }
 
-// export default { addtask, changeDevName }
+export const Authprofile = (profileObj) => {
+    return {
+        type: AUTH_USER,
+        info: 'This action is used to auth user',
+        Profile: profileObj
+    }
+}
+
+export const userLogout = () => {
+    return (dispatch) => {
+        firebaseApp.auth().signOut().then(() => {
+            dispatch({
+                type: USER_LOGOUT,
+                info: 'This action is used to logout an user',
+                Profile: ''
+            });
+        }, (error) => {
+            console.log("An error happened during logout", error);
+        });
+    }
+}

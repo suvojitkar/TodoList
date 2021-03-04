@@ -5,18 +5,14 @@ App do not change the store data directly
 Reducer function is used to change store data
 */
 
-// App Reducer
-const CHANGE_DEV = 'CHANGE_DEV';
+// App Reducers
 const ADD_TASK = 'ADD_TASK';
 const DELETE_TASK = 'DELETE_TASK';
+const AUTH_USER = 'AUTH_USER';
+const USER_LOGOUT = 'USER_LOGOUT';
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case CHANGE_DEV:
-            return {
-                ...state,
-                Developer: action.payload
-            }
         case ADD_TASK:
             console.log('Let the reducer deal with global state based on action type:', ADD_TASK);
             return {
@@ -29,6 +25,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 todoItems: afterDeleteItems
+            }
+        case AUTH_USER:
+            console.log('Let the reducer deal with global state based on action type:', AUTH_USER);
+            return {
+                ...state,
+                Profile: action.Profile
+            }
+        case USER_LOGOUT:
+            console.log('Let the reducer deal with global state based on action type:', USER_LOGOUT);
+            return {
+                ...state,
+                Profile: action.Profile
             }
         default: return state
     }

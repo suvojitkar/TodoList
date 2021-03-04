@@ -1,25 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addtask, deletetask, changeDevName } from './redux-mgmt/actions';
-  
-import firebaseApp from './config/firebaseconfig';
 import firebase from 'firebase';
 
+import { Authprofile } from './redux-mgmt/actions';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './App.scss';
+import './components/Footer/Footer.scss';
+import './components/Navigationbar/Navigationbar.scss';
+import './components/Login/Login.scss';
+import './components/Taskentry/Taskentry.scss';
 
-import Listitems from './components/Listitems/Listitems';
-import './components/Listitems/Listitems.css';
 import Footer from './components/Footer/Footer';
-import './components/Footer/Footer.css';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
-import Dropdown from 'react-bootstrap/Dropdown';
-
+import Navigationbar from './components/Navigationbar/Navigationbar';
+import Login from './components/Login/Login';
+import Taskentry from './components/Taskentry/Taskentry';
 
 import logo from './assets/logo.gif';
 
@@ -32,8 +27,6 @@ export class App extends Component {
       userInfo: ''
     }
     this.taskInputHandler = this.taskInputHandler.bind(this);
-    this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
-    this.handleGoogleLogout = this.handleGoogleLogout.bind(this);
   }
 
   taskInputHandler($event) {
@@ -46,138 +39,52 @@ export class App extends Component {
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        if (!this.state.userInfo) {
-          this.setState({
-            ...this.state,
-            userInfo: user.providerData[0]
-          });
+        let profileObj = {
+          'name': user.displayName,
+          'email': user.email,
+          'img': user.photoURL
         }
-        console.log("User is logged in", this.state);
+        this.props.addUserProfile(profileObj);
+        console.log("User is logged in", user);
       } else {
-        console.log("User is logged out", this.state);
+        console.log("User is logged out");
       }
     });
   }
-  
-  handleGoogleLogout() {
-    firebaseApp.auth().signOut().then(() => {
-         this.setState({
-          ...this.state,
-          userInfo: ''
-        });
-      console.log("Logout out succesful", this.state);
-    },(error) => {
-      console.log("An error happened during logouot", error);
-    });
-  }
-
-
-  handleGoogleLogin(e) {
-    e.preventDefault();
-    let provider = new firebase.auth.GoogleAuthProvider();
-    firebaseApp.auth().signInWithPopup(provider).then((result) => {
-      if (!this.state.userInfo) {
-        this.setState({
-          ...this.state,
-          userInfo: result.additionalUserInfo.profile
-        });
-      }
-      console.log('Google login success', this.state);
-    }).catch((error) => {
-      let errorMessage = error.message;
-      alert("Google sign in error: " + errorMessage);
-    });
-  }
-
 
   render() {
-    let navMenuopt;
-    if (!this.state.userInfo) {
-      console.log("show login");
-      navMenuopt = <Button variant="outline-success" onClick={this.handleGoogleLogin}> Login </Button>
-    } else {
-      console.log("show dropdown");
-      navMenuopt = <Dropdown>
-                    <Dropdown.Toggle variant="info" id="dropdown-basic">
-                      <Image className="profilepic" src={this.state.userInfo.hasOwnProperty('photoURL') ? this.state.userInfo.photoURL : this.state.userInfo.picture} roundedCircle />
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-                      <Dropdown.Item onClick={this.handleGoogleLogout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+    const bodyContent = () => {
+      if (this.props.userInfo) {
+        return <Taskentry></Taskentry>
+      } else {
+        return <Login></Login>
+      }
     }
     return (
       <div>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <Nav.Link href="#link">{ }</Nav.Link>
-              <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-success">Search</Button>
-              </Form>
-            </Nav>
-            { navMenuopt }
-            <div className="offset">
-              offset
-            </div>
-          </Navbar.Collapse>
-        </Navbar>
-
-        <br /><br />
+        <Navigationbar></Navigationbar>
         <center>
           <h1 className="title projectHeader"> TaskList Tracker</h1>
           <img src={logo} alt="logo" width="80" height="80"></img>
         </center>
-
-        <div id="add-task-bar" className="App">
-          <input type="text" id="currentTask" placeholder="Enter a task" value={ this.state.currentTask} onChange={ this.taskInputHandler} autoComplete="off"></input>
-          <button onClick={() => { this.props.AddTask(this, this.state.currentTask) }}> Add</button>
-          
-          <div className="listComponent">
-            <Listitems items={this.props}></Listitems>
-          </div>
-        </div>
+        {bodyContent()}
         <Footer></Footer>
       </div>
     )
   }
 }
 
-// create props from global state variable
 const mapStateToProps = (state) => {
   return {
     todoItems: state.todoItems,
-    developer: state.Developer
+    userInfo: state.Profile
   }
 }
 
-// create props for actions
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeDeveloper: (name) => {
-      dispatch(changeDevName(name));
-    },
-    AddTask: (stateRef, task) => {
-      stateRef.setState({
-        currentTask: ''
-      });
-      if (task !== "") {
-        console.log('User action indicates to dispatch an action to add items:', task);
-        dispatch(addtask(task));
-      } else {
-        alert('Task cannot be empty');
-      }
-    },
-    DeleteTask: (taskId) => {
-      console.log('User action indicates to dispatch an action to delete items:', taskId);
-      dispatch(deletetask(taskId));
+    addUserProfile: (profileObj) => {
+      dispatch(Authprofile(profileObj));
     }
   }
 }

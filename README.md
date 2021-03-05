@@ -8,6 +8,9 @@
 # Install dependency
 npm install
 
+# React vs studio extension
+ES7 React/Redux/GraphQL/React-Native
+
 # Run the app
 npm start
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Authuser } from '../../redux-mgmt/actions'
 import { connect } from 'react-redux'
 
-export class Login extends Component {
+class Login extends Component {
     render() {
         return (
             <center>

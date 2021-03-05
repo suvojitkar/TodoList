@@ -4,7 +4,7 @@ import { addtask, deletetask } from '../../redux-mgmt/actions';
 import Listitems from '../Listitems/Listitems';
 import '../Listitems/Listitems.scss'
 
-export class Taskentry extends Component {
+class Taskentry extends Component {
     constructor(props) {
         super(props);
         this.state = {

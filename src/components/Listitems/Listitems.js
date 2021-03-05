@@ -19,11 +19,11 @@ function Listitems(props) {
     });
 
     return (
-        <div>
+        <React.Fragment>
             <FlipMove duration={300} easing="ease-in-out">
                 {listItems}
             </FlipMove>
-        </div>
+        </React.Fragment>
     )
 }
 

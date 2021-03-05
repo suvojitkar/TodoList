@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
@@ -8,9 +9,10 @@ import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Image from 'react-bootstrap/Image'
 import { userLogout } from '../../redux-mgmt/actions';
+import { Person, Gear, BoxArrowLeft } from 'react-bootstrap-icons';
 
 
-export class Navigationbar extends Component {
+class Navigationbar extends Component {
     render() {
         const profileIcon = () => {
             if (this.props.Profile) {
@@ -20,9 +22,9 @@ export class Navigationbar extends Component {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-                        <Dropdown.Item onClick={() => { this.props.handleGoogleLogout() }}>Logout</Dropdown.Item>
+                        <Dropdown.Item> <Link to="/profile" style={{ textDecoration: 'none' }}><Person />&nbsp;Profile</Link></Dropdown.Item>
+                        <Dropdown.Item href="/action-2"><Gear /> &nbsp;Settings</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { this.props.handleGoogleLogout() }}><BoxArrowLeft /> &nbsp;Logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             } else {
@@ -31,12 +33,12 @@ export class Navigationbar extends Component {
         }
 
         return (
-            <div>
+            <React.Fragment>
                 <Navbar bg="light" expand="lg">
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
+                            <Nav.Link><Link to="/" style={{ textDecoration: 'none' }}>Home</Link></Nav.Link>
                             <Nav.Link href="#link">Link</Nav.Link>
                             <Form inline>
                                 <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -49,7 +51,7 @@ export class Navigationbar extends Component {
                         </div>
                     </Navbar.Collapse>
                 </Navbar>
-            </div>
+            </React.Fragment>
         )
     }
 }

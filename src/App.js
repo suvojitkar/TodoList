@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import firebase from 'firebase';
+
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Authprofile } from './redux-mgmt/actions';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import './components/Footer/Footer.scss';
 import './components/Navigationbar/Navigationbar.scss';
+import './components/Project/Project.scss';
 import './components/Login/Login.scss';
 import './components/Taskentry/Taskentry.scss';
+import './components/Profile/Profile.scss';
+import './components/Footer/Footer.scss';
 
-import Footer from './components/Footer/Footer';
-import Navigationbar from './components/Navigationbar/Navigationbar';
-import Login from './components/Login/Login';
-import Taskentry from './components/Taskentry/Taskentry';
-
-import logo from './assets/logo.gif';
+import AppNavigationbar from './components/Navigationbar/Navigationbar';
+import AppTitle from './components/Project/Project';
+import AppLogin from './components/Login/Login';
+import AppTaskentry from './components/Taskentry/Taskentry';
+import AppProfile from './components/Profile/Profile';
+import AppFooter from './components/Footer/Footer';
 
 export class App extends Component {
 
@@ -55,21 +60,24 @@ export class App extends Component {
   render() {
     const bodyContent = () => {
       if (this.props.userInfo) {
-        return <Taskentry></Taskentry>
+        return <React.Fragment>
+                  <Route path="/" exact component={AppTaskentry} />
+                  <Route path="/profile" exact><AppProfile userInfo={this.props.userInfo}/></Route>
+                </React.Fragment>
+          
       } else {
-        return <Login></Login>
+        return <AppLogin />
       }
     }
     return (
-      <div>
-        <Navigationbar></Navigationbar>
-        <center>
-          <h1 className="title projectHeader"> TaskList Tracker</h1>
-          <img src={logo} alt="logo" width="80" height="80"></img>
-        </center>
-        {bodyContent()}
-        <Footer></Footer>
-      </div>
+      <Router>
+          <React.Fragment>
+            <AppNavigationbar />
+            <AppTitle title={this.props.title}/>
+            {bodyContent()}
+            <AppFooter developer={ this.props.developer }/>
+        </React.Fragment>
+      </Router>
     )
   }
 }
@@ -77,7 +85,9 @@ export class App extends Component {
 const mapStateToProps = (state) => {
   return {
     todoItems: state.todoItems,
-    userInfo: state.Profile
+    userInfo: state.Profile,
+    developer: state.developer,
+    title: state.projectTitle
   }
 }
 

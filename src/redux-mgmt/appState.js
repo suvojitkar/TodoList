@@ -1,10 +1,11 @@
 const appState = {
+    projectTitle: 'TaskList Tracker',
     todoItems: [],
     currentTodoItem: {
         text: '',
         key: ''
     },
-    Developer: 'suvojit',
+    developer: '@suvojit kar',
     Profile: ''
 }
 
